@@ -37,6 +37,9 @@ void TLive::LoadModel(void)
     model_num_ = static_cast<int>(configs_.size());
     for(int i=0; i<model_num_; ++i){
         ncnn::Net *net = new ncnn::Net();
+
+        net->opt = option_;
+
         std::string param=  "./models/live/" + configs_[i].name + ".param";
         std::string model = "./models/live/"  + configs_[i].name + ".bin";
         net->load_param(param.c_str());
@@ -65,8 +68,8 @@ float TLive::Detect(cv::Mat &src, LiveFaceBox &box) {
 
 
         ncnn::Extractor extractor = nets_[i]->create_extractor();
-        extractor.set_light_mode(true);
-        extractor.set_num_threads(thread_num_);
+        // extractor.set_light_mode(true);
+        // extractor.set_num_threads(thread_num_);
 
         extractor.input(net_input_name_.c_str(), in);
         ncnn::Mat out;
